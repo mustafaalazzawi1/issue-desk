@@ -6,7 +6,15 @@ Local verification on November 25, 2026 passed **28 tests**: 19 existing real HT
 
 New coverage includes real login/API throttling through Spring Security, window reset and `Retry-After`, simultaneous requests, separate login/write budgets, changed sessions and forwarded addresses, demo-only activation, and health/static/logout exemptions. The original workflow suite disables the aggregate budget so that unrelated test traffic cannot interfere with its assertions; the dedicated HTTP test explicitly enables it.
 
-The owner maintenance script is read-only and the backup-first runbook is a plan. No live records have been deleted and a backup restore drill has not yet been executed. [Latest CI results](https://github.com/mustafaalazzawi1/issue-desk/actions/workflows/ci.yml) identify the tested source. Hosted deployment acceptance for this revision is recorded below once complete.
+The owner maintenance script is read-only and the backup-first runbook is a plan. No live records have been deleted, the maintenance SQL has not been run against the hosted database, and a backup restore drill has not yet been executed.
+
+### Hosted acceptance — November 25, 2026
+
+Source commit `7a1968f2e92f400e5b9085e75c78197661cdf546` passed [GitHub Actions run 45597498343](https://github.com/mustafaalazzawi1/issue-desk/actions/runs/45597498343), including all 28 tests and the packaged-JAR smoke test. Railway deployment `6c3fd738-8dc8-45bc-8fbd-ec971330173d` reached `SUCCESS` for that exact source. The public application displays **v0.1.1**.
+
+After deployment, browser checks confirmed administrator sign-in, all nine retained reports, the three resolved reports, and ISS-009's existing comment, assignment, and three activity events. Independent HTTP checks passed for the v0.1.1 HTML, database readiness, anonymous rejection, member access to the retained acceptance report, cross-member report isolation, administrator access, and missing-CSRF mutation rejection. These checks did not create or change reports.
+
+The hosted service remains one replica with 0.5 GB memory, a 1-vCPU limit, and sleep enabled on the existing Free workspace. Request budgets were exercised in local and hosted CI tests; the public demo was not deliberately saturated. This is a focused regression review, not a load test or independent security audit.
 
 ## Earlier deployed baseline: v0.1.0
 
