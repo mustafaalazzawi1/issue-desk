@@ -9,7 +9,7 @@
   </parent>
   <groupId>dev.mustafa</groupId>
   <artifactId>issue-tracker</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
   <name>Issue Desk</name>
   <description>A Java issue tracker with PostgreSQL, role-based access and an auditable history.</description>
   <properties>

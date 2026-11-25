@@ -28,7 +28,7 @@ The database has users, issues, comments, and audit events. Foreign keys preserv
 
 ## Scope and next steps
 
-The first release has no email, file attachments, registration, password reset, organizations, or SLA automation. These are deliberately deferred. Production use would need account provisioning, abuse controls, log/metric monitoring, backup restoration checks, secret rotation, and a reviewed retention policy. Public demo accounts do not provide privacy between visitors using the same account.
+The first release has no email, file attachments, registration, password reset, organizations, or SLA automation. These are deliberately deferred. Production use would need account provisioning, provider-level abuse controls beyond the shared demo request budgets, log/metric monitoring, backup restoration checks, secret rotation, and a reviewed retention policy. Public demo accounts do not provide privacy between visitors using the same account.
 
 ## Authorship
 

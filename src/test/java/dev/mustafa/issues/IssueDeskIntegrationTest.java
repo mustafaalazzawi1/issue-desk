@@ -20,7 +20,11 @@ import org.springframework.test.context.DynamicPropertySource;
 /** Real HTTP requests, real sessions, and a fresh real PostgreSQL database. */
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    properties = {"app.demo.enabled=true", "server.servlet.session.cookie.secure=false"})
+    properties = {
+      "app.demo.enabled=true",
+      "app.demo.rate-limit.enabled=false",
+      "server.servlet.session.cookie.secure=false"
+    })
 class IssueDeskIntegrationTest {
   static final ObjectMapper JSON = new ObjectMapper();
   static final EmbeddedPostgres PG = startPostgres();
@@ -461,7 +465,8 @@ class IssueDeskIntegrationTest {
               .header(c.header, c.csrf)
               .POST(
                   HttpRequest.BodyPublishers.ofInputStream(
-                      () -> new java.io.ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8))))
+                      () ->
+                          new java.io.ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8))))
               .build();
       assertEquals(
           413, c.http.send(req, HttpResponse.BodyHandlers.ofString()).statusCode(), contentType);

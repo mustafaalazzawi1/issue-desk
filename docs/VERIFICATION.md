@@ -1,5 +1,15 @@
 # Verification record
 
+## v0.1.1: demo request budgets
+
+Local verification on November 25, 2026 passed **28 tests**: 19 existing real HTTP/PostgreSQL workflow tests, one additional real HTTP test with rate limits enabled, and 8 request-budget tests. No failures, errors, or skips. The production JAR smoke test and JavaScript/shell syntax checks also passed.
+
+New coverage includes real login/API throttling through Spring Security, window reset and `Retry-After`, simultaneous requests, separate login/write budgets, changed sessions and forwarded addresses, demo-only activation, and health/static/logout exemptions. The original workflow suite disables the aggregate budget so that unrelated test traffic cannot interfere with its assertions; the dedicated HTTP test explicitly enables it.
+
+The owner maintenance script is read-only and the backup-first runbook is a plan. No live records have been deleted and a backup restore drill has not yet been executed. [Latest CI results](https://github.com/mustafaalazzawi1/issue-desk/actions/workflows/ci.yml) identify the tested source. Hosted deployment acceptance for this revision is recorded below once complete.
+
+## Earlier deployed baseline: v0.1.0
+
 Rebuilt and rechecked from a fresh source copy. Verified on Linux with Temurin 21.0.11+10, Spring Boot 3.5.16, and PostgreSQL 17.12.
 
 | Check                                  | Result                                                                                                                                       |

@@ -25,7 +25,7 @@ public class PackagedSmoke {
           new ProcessBuilder(
               Path.of(System.getProperty("java.home"), "bin", "java").toString(),
               "-jar",
-              "target/issue-tracker-0.1.0.jar");
+              "target/issue-tracker-0.1.1.jar");
       builder.environment().put("DATABASE_URL", pg.getJdbcUrl("postgres", "postgres"));
       builder.environment().put("DATABASE_USERNAME", "postgres");
       builder.environment().put("DATABASE_PASSWORD", "");

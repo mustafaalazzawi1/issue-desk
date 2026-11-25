@@ -6,7 +6,7 @@ A focused issue tracker: report a problem, assign responsibility, discuss the ne
 
 **Java 21 · Spring Boot · PostgreSQL · Spring Security · Flyway**
 
-[**Try the live demo**](https://issue-desk-production.up.railway.app/) · [Portfolio](https://mustafa-al-azzawi-portfolio.mustafaalazzawi.chatgpt.site)
+[**Try the live demo**](https://issue-desk-production.up.railway.app/) · [Recorded walkthrough](https://mustafa-al-azzawi-portfolio.mustafaalazzawi.chatgpt.site/#issue-desk-project) · [Portfolio](https://mustafa-al-azzawi-portfolio.mustafaalazzawi.chatgpt.site)
 
 The live demo uses shared sample accounts and persistent data. Use fictional information only. Free hosting may need time to wake and can pause when its monthly allowance is exhausted.
 
@@ -63,7 +63,7 @@ Open http://localhost:8080. The app port is bound to localhost; PostgreSQL is on
 
 The integration suite sends real HTTP requests through Spring Security to a fresh **real PostgreSQL** database. It covers owner isolation, role checks, CSRF, session rotation and logout, input limits, search, pagination, assignment validation, durable comments, audit events, and two administrators saving concurrently. It uses an embedded PostgreSQL process, not an in-memory SQL substitute. Tests do not touch the local demo database.
 
-The production artifact is `target/issue-tracker-0.1.0.jar`. [The deployed source passed GitHub Actions](https://github.com/mustafaalazzawi1/issue-desk/actions/runs/45592145187), including all 19 integration tests, the packaged-JAR smoke test, and browser-script syntax.
+The production artifact is `target/issue-tracker-0.1.1.jar`. The suite contains 20 HTTP/PostgreSQL integration tests and 8 request-budget tests. The workflow also runs the packaged-JAR smoke test and browser-script syntax checks. [View the latest GitHub Actions results](https://github.com/mustafaalazzawi1/issue-desk/actions/workflows/ci.yml).
 
 ## Deploy the Java app
 
@@ -78,9 +78,15 @@ Use a host that runs Java 21 or Docker and a **dedicated PostgreSQL database**. 
 | `COOKIE_SECURE`     | `true` behind public HTTPS                                         |
 | `DEMO_ENABLED`      | `true` for the synthetic public demonstration; defaults to `false` |
 
-Run `java -jar target/issue-tracker-0.1.0.jar` or build the Dockerfile. Health check: `GET /api/health`. Flyway applies the versioned schema at startup. Keep database credentials out of Git. The published demo uses HTTPS, secure cookies, and a dedicated Neon PostgreSQL 17 database. Certificate and hostname verification remain enabled. See [deployment configuration](docs/DEPLOYMENT.md) for the Java trust-store setting, connection-pool configuration, and Free-plan limits. Provider rate limiting, a backup/restore drill, and production account management have not been implemented; this is a bounded public demo, not a private help-desk service.
+Run `java -jar target/issue-tracker-0.1.1.jar` or build the Dockerfile. Health check: `GET /api/health`. Flyway applies the versioned schema at startup. Keep database credentials out of Git. The published demo uses HTTPS, secure cookies, and a dedicated Neon PostgreSQL 17 database. Certificate and hostname verification remain enabled. See [deployment configuration](docs/DEPLOYMENT.md) for the Java trust-store setting, connection-pool configuration, and Free-plan limits. The single-replica demo has bounded application request budgets. Provider-level abuse protection, a completed backup/restore drill, and production account management remain outside this build; this is a bounded public demo, not a private help-desk service.
 
 Demo mode is not an account-management system. With demo mode off, this version has no registration or user-provisioning UI. Do not use the public sample accounts for private reports.
+
+## Demo traffic and maintenance
+
+Demo mode shares three fixed one-minute budgets across all visitors: 240 API requests, including at most 12 login attempts and 30 other mutations. Exceeded budgets return HTTP 429, a short explanation, and `Retry-After` in seconds. Static pages, database health, and logout remain available. A new session or forwarded IP header does not create another budget. The policy uses constant memory, resets on restart, and is intended for one replica. It is not network-level denial-of-service protection; one visitor can temporarily use the shared allowance.
+
+The existing reports stay intact. [Owner maintenance instructions](docs/DEMO-OPERATIONS.md) provide a read-only capacity check and a backup-first cleanup plan. No scheduled deletion or public reset control is enabled.
 
 ## Implementation notes
 

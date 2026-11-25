@@ -2,7 +2,7 @@
 
 [Open Issue Desk](https://issue-desk-production.up.railway.app/)
 
-Verified November 25, 2026. The public application runs the repository Dockerfile on Railway Free and uses a dedicated Neon Free PostgreSQL 17 database. The Railway deployment is pinned to reviewed source commit `fdf6ab4663229e88604c63626247e5e7c401c86b`; subsequent documentation edits do not rebuild the application automatically.
+Verified November 25, 2026. The public application runs the repository Dockerfile on Railway Free and uses a dedicated Neon Free PostgreSQL 17 database. Railway is pinned to a reviewed source commit rather than automatically following every push. The deployed revision and checks are recorded in [verification](VERIFICATION.md).
 
 ## Service configuration
 
@@ -41,7 +41,11 @@ The JDBC URL uses `sslmode=verify-full`. The service also sets the following non
 
 The deployment uses Railway Free with no payment method and Neon Free. Railway's monthly usage allowance is shared within the workspace. The service may sleep while idle, take time to wake, or stop when the allowance is exhausted. Do not upgrade plans, purchase credits, or enable paid overage as part of this demo. No continuous-availability guarantee is made.
 
-The seeded accounts are intentionally public. Visitors share data; use fictional information only. The dataset is not automatically reset. The application limits total issues and comments per issue, but this is not a substitute for a provider abuse-protection or rate-limiting service.
+The seeded accounts are intentionally public. Visitors share data; use fictional information only. The dataset is not automatically reset. The application limits total issues, comments per issue, and traffic in demo mode. Defaults are 240 API requests, 12 login attempts, and 30 other mutations per one-minute window, shared by all visitors. Request budgets run before authentication and request-body parsing. The limit response includes a wait message and `Retry-After`; static files, health, and logout are exempt. The budgets occupy constant memory and reset on restart. They are for one replica, not provider-level DDoS protection.
+
+Optional Spring properties are `app.demo.rate-limit.enabled`, `app.demo.rate-limit.requests-per-minute`, `app.demo.rate-limit.logins-per-minute`, and `app.demo.rate-limit.writes-per-minute`. Each numeric limit must be positive. Keep the policy enabled on the public demo. Existing production environment variables and provider plans need no changes.
+
+[Owner maintenance](DEMO-OPERATIONS.md) is read-only by default. No cleanup job, new service, paid backup feature, or public reset endpoint is introduced.
 
 ## Verification
 
