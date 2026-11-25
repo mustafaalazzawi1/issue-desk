@@ -11,11 +11,11 @@ Rebuilt and rechecked from a fresh source copy. Verified on Linux with Temurin 2
 | Keyboard history tabs                  | Arrow-key navigation switched Discussion/Activity correctly                                                                                  |
 | Compact layout                         | Inspected at 539 and 337 CSS pixels using browser zoom; no horizontal document overflow; new-issue dialog and form widths remained contained |
 | JavaScript and shell syntax            | Checked locally                                                                                                                              |
-| GitHub Actions                         | Workflow supplied; hosted workflow has not run                                                                                               |
+| GitHub Actions                         | [Passed on GitHub Actions](https://github.com/mustafaalazzawi1/issue-desk/actions/runs/45583785880), source commit `6770702`                                                                                               |
 | macOS, Docker, public HTTPS hosting    | Not executed in this environment                                                                                                             |
 
 The integration suite includes simultaneous competing updates, not just sequential stale requests: exactly one save succeeds and one returns 409. It also tests unauthorized reads/comments, admin-only mutations, literal wildcard/SQL-like search, malformed input, chunked request-size limits, CSRF enforcement, session rotation, cookie attributes, and audit consistency.
 
 The narrow-width checks used desktop Chromium zoom. They are not a claim of testing physical mobile devices or mobile Safari. A complete accessibility audit, load test, and independent security audit have not been performed.
 
-Public deployment is pending a Java-capable hosting connection and a dedicated database. No live-demo URL is claimed by this package. The existing portfolio was not changed.
+Source commit `6770702` passed hosted GitHub Actions on November 25, 2026. A dedicated Neon PostgreSQL 17 project has been provisioned, and Render hosting is being configured. Public HTTPS verification remains pending; no live-demo URL is claimed yet. The existing portfolio has not been changed during this publication pass.

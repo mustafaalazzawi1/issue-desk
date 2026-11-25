@@ -1,10 +1,12 @@
 # Issue Desk
 
+[![Java and PostgreSQL verification](https://github.com/mustafaalazzawi1/issue-desk/actions/workflows/ci.yml/badge.svg)](https://github.com/mustafaalazzawi1/issue-desk/actions/workflows/ci.yml)
+
 A focused issue tracker: report a problem, assign responsibility, discuss the next step, and keep a history of what changed.
 
 **Java 21 · Spring Boot · PostgreSQL · Spring Security · Flyway**
 
-This is an independent portfolio project by **Mustafa Al Azzawi**, developed with Codex assistance. It is not coursework. The first version demonstrates backend authorization, relational data, transactions, concurrent edits, and a complete browser workflow. Public deployment is pending; the local demo runs the actual Java application and PostgreSQL.
+This is an independent portfolio project by **Mustafa Al Azzawi**, developed with Codex assistance. It is not coursework. The first version demonstrates backend authorization, relational data, transactions, concurrent edits, and a complete browser workflow. The source and automated verification are published on GitHub. Live hosting is being configured; the local demo runs the actual Java application and PostgreSQL.
 
 ## What you can do
 
@@ -55,7 +57,7 @@ Open http://localhost:8080. The app port is bound to localhost; PostgreSQL is on
 
 The integration suite sends real HTTP requests through Spring Security to a fresh **real PostgreSQL** database. It covers owner isolation, role checks, CSRF, session rotation and logout, input limits, search, pagination, assignment validation, durable comments, audit events, and two administrators saving concurrently. It uses an embedded PostgreSQL process, not an in-memory SQL substitute. Tests do not touch the local demo database.
 
-The production artifact is `target/issue-tracker-0.1.0.jar`.
+The production artifact is `target/issue-tracker-0.1.0.jar`. [The first hosted verification run passed](https://github.com/mustafaalazzawi1/issue-desk/actions/runs/45583785880), including all 19 integration tests, the packaged-JAR smoke test, and browser-script syntax.
 
 ## Deploy the Java app
 
@@ -70,7 +72,7 @@ Use a host that runs Java 21 or Docker and a **dedicated PostgreSQL database**. 
 | `COOKIE_SECURE`     | `true` behind public HTTPS                                         |
 | `DEMO_ENABLED`      | `true` for the synthetic public demonstration; defaults to `false` |
 
-Run `java -jar target/issue-tracker-0.1.0.jar` or build the Dockerfile. Health check: `GET /api/health`. Flyway applies the versioned schema at startup. Keep database credentials out of Git. For public hosting, use HTTPS, secure cookies, provider rate limiting, backups, and a separate database. Hosting costs and provider connection still need to be agreed before a live deployment.
+Run `java -jar target/issue-tracker-0.1.0.jar` or build the Dockerfile. Health check: `GET /api/health`. Flyway applies the versioned schema at startup. Keep database credentials out of Git. For public hosting, use HTTPS, secure cookies, provider rate limiting, backups, and a separate database. The current hosting setup uses a free Render Docker web service and a dedicated Neon PostgreSQL 17 database. Public HTTPS acceptance is still pending. Free hosting can sleep when idle; there is no always-on availability claim.
 
 Demo mode is not an account-management system. With demo mode off, this version has no registration or user-provisioning UI. Do not use the public sample accounts for private reports.
 
