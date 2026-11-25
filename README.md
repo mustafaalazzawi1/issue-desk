@@ -6,7 +6,11 @@ A focused issue tracker: report a problem, assign responsibility, discuss the ne
 
 **Java 21 · Spring Boot · PostgreSQL · Spring Security · Flyway**
 
-This is an independent portfolio project by **Mustafa Al Azzawi**, developed with Codex assistance. It is not coursework. The first version demonstrates backend authorization, relational data, transactions, concurrent edits, and a complete browser workflow. The source and automated verification are published on GitHub. Live hosting is being configured; the local demo runs the actual Java application and PostgreSQL.
+[**Try the live demo**](https://issue-desk-production.up.railway.app/) · [Portfolio](https://mustafa-al-azzawi-portfolio.mustafaalazzawi.chatgpt.site)
+
+The live demo uses shared sample accounts and persistent data. Use fictional information only. Free hosting may need time to wake and can pause when its monthly allowance is exhausted.
+
+This is an independent portfolio project by **Mustafa Al Azzawi**, developed with Codex assistance. It is not coursework. The first version demonstrates backend authorization, relational data, transactions, concurrent edits, and a complete browser workflow. The source and automated verification are published on GitHub. The live demo runs the Java application on Railway with a dedicated Neon PostgreSQL database.
 
 ## What you can do
 
@@ -47,7 +51,7 @@ cp .env.example .env
 docker compose up --build
 ```
 
-Open http://localhost:8080. The app port is bound to localhost; PostgreSQL is only exposed inside the Compose network. Database data lives in the named volume. Stop with `docker compose down`; this preserves the volume. The container definitions are supplied for reproducibility, but a Docker runtime was not available for execution in the development environment.
+Open http://localhost:8080. The app port is bound to localhost; PostgreSQL is only exposed inside the Compose network. Database data lives in the named volume. Stop with `docker compose down`; this preserves the volume. The Dockerfile was built and deployed successfully on Railway. The local Compose workflow has not been executed in the development environment.
 
 ## Build and test
 
@@ -57,7 +61,7 @@ Open http://localhost:8080. The app port is bound to localhost; PostgreSQL is on
 
 The integration suite sends real HTTP requests through Spring Security to a fresh **real PostgreSQL** database. It covers owner isolation, role checks, CSRF, session rotation and logout, input limits, search, pagination, assignment validation, durable comments, audit events, and two administrators saving concurrently. It uses an embedded PostgreSQL process, not an in-memory SQL substitute. Tests do not touch the local demo database.
 
-The production artifact is `target/issue-tracker-0.1.0.jar`. [The first hosted verification run passed](https://github.com/mustafaalazzawi1/issue-desk/actions/runs/45583785880), including all 19 integration tests, the packaged-JAR smoke test, and browser-script syntax.
+The production artifact is `target/issue-tracker-0.1.0.jar`. [The deployed source passed GitHub Actions](https://github.com/mustafaalazzawi1/issue-desk/actions/runs/45586489178), including all 19 integration tests, the packaged-JAR smoke test, and browser-script syntax.
 
 ## Deploy the Java app
 
@@ -65,14 +69,14 @@ Use a host that runs Java 21 or Docker and a **dedicated PostgreSQL database**. 
 
 | Variable            | Example or meaning                                                 |
 | ------------------- | ------------------------------------------------------------------ |
-| `DATABASE_URL`      | `jdbc:postgresql://HOST:5432/DATABASE?sslmode=require`             |
+| `DATABASE_URL`      | `jdbc:postgresql://HOST:5432/DATABASE?sslmode=verify-full`             |
 | `DATABASE_USERNAME` | Dedicated database user                                            |
 | `DATABASE_PASSWORD` | Database secret from the host's secret store                       |
 | `PORT`              | HTTP listener, default `8080`                                      |
 | `COOKIE_SECURE`     | `true` behind public HTTPS                                         |
 | `DEMO_ENABLED`      | `true` for the synthetic public demonstration; defaults to `false` |
 
-Run `java -jar target/issue-tracker-0.1.0.jar` or build the Dockerfile. Health check: `GET /api/health`. Flyway applies the versioned schema at startup. Keep database credentials out of Git. For public hosting, use HTTPS, secure cookies, provider rate limiting, backups, and a separate database. A dedicated Neon PostgreSQL 17 database has been provisioned. The web service has not been deployed; hosting selection and public HTTPS acceptance remain pending. Free hosting may sleep or stop at its usage limit; there is no always-on availability claim.
+Run `java -jar target/issue-tracker-0.1.0.jar` or build the Dockerfile. Health check: `GET /api/health`. Flyway applies the versioned schema at startup. Keep database credentials out of Git. The published demo uses HTTPS, secure cookies, and a dedicated Neon PostgreSQL 17 database. Certificate and hostname verification remain enabled. See [deployment configuration](docs/DEPLOYMENT.md) for the Java trust-store setting, connection-pool configuration, and Free-plan limits. Provider rate limiting, a backup/restore drill, and production account management have not been implemented; this is a bounded public demo, not a private help-desk service.
 
 Demo mode is not an account-management system. With demo mode off, this version has no registration or user-provisioning UI. Do not use the public sample accounts for private reports.
 
