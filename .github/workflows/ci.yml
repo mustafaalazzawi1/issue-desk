@@ -1,0 +1,25 @@
+name: Java and PostgreSQL verification
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: Verify Java, HTTP security, and PostgreSQL workflows
+        run: ./mvnw -B -ntp verify dependency:build-classpath -Dmdep.outputFile=target/classpath.txt
+      - name: Smoke-test the packaged JAR
+        run: bash scripts/smoke.sh
+      - name: Check browser script syntax
+        run: node --check src/main/resources/static/app.js

@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#163b32" />
+    <title>Issue Desk — A clearer way to resolve issues</title>
+    <meta
+      name="description"
+      content="An issue tracker with accountable ownership, focused conversations, and a clear activity history."
+    />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <div id="boot" class="boot">
+      <span class="brand"><img src="/icon.svg" alt="" />Issue Desk</span>
+      <p id="boot-message" role="status">Opening your workspace…</p>
+      <button id="boot-retry" class="button primary" hidden>Try again</button>
+    </div>
+    <section id="login-screen" class="login-screen" hidden aria-label="Sign in">
+      <div class="login-story">
+        <a class="brand" href="/"><img src="/icon.svg" alt="" />Issue Desk</a>
+        <div class="story-copy">
+          <span class="eyebrow">LESS FRICTION. MORE FOLLOW-THROUGH.</span>
+          <h1>A clear path<br />from reported<br />to <em>resolved.</em></h1>
+          <p>
+            Give every issue an owner, every update a place, and everyone a
+            clear next step.
+          </p>
+          <div class="story-workflow">
+            <span>Reported</span><span>In progress</span><span>Resolved</span>
+          </div>
+        </div>
+        <p class="story-footer">
+          A focused workspace for the work behind the work.
+        </p>
+      </div>
+      <div class="login-panel">
+        <div class="login-inner">
+          <span class="eyebrow">YOUR WORKSPACE</span>
+          <h2>Good work starts<br />with a clear picture.</h2>
+          <p class="muted">Sign in to review issues and keep things moving.</p>
+          <div id="demo-accounts" class="demo-access" hidden>
+            <div class="section-label">EXPLORE THE DEMO</div>
+            <div class="demo-buttons">
+              <button class="demo-account" data-user="alex">
+                <strong>As a member</strong
+                ><span>Create & follow your issues</span></button
+              ><button class="demo-account" data-user="sam">
+                <strong>As an administrator</strong
+                ><span>Triage, assign & resolve</span>
+              </button>
+            </div>
+            <p>Shared sample workspace. Use fictional information only.</p>
+            <details>
+              <summary>View sample credentials</summary>
+              <p>
+                Usernames: <code>alex</code>, <code>jamie</code> (members);
+                <code>sam</code>, <code>riley</code> (administrators). Password:
+                <code>IssueDesk-demo-2026!</code>
+              </p>
+            </details>
+          </div>
+          <form id="login-form">
+            <label for="username">Username</label
+            ><input
+              id="username"
+              name="username"
+              autocomplete="username"
+              required
+              maxlength="40"
+            /><label for="password">Password</label
+            ><input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              maxlength="100"
+            />
+            <p id="login-error" class="error" role="alert" hidden></p>
+            <button class="button primary full" type="submit">Sign in</button>
+          </form>
+          <p class="login-credit">A portfolio project by Mustafa Al Azzawi.</p>
+        </div>
+      </div>
+    </section>
+    <div id="workspace" class="workspace" hidden>
+      <aside class="sidebar">
+        <a class="brand" href="/"><img src="/icon.svg" alt="" />Issue Desk</a
+        ><span class="workspace-label">WORKSPACE</span>
+        <nav aria-label="Issue views">
+          <button class="nav-item active" data-view="">
+            <span class="nav-icon">▦</span>All issues<span
+              id="nav-total"
+              class="nav-count"
+              >0</span
+            ></button
+          ><button class="nav-item" data-view="OPEN">
+            <span class="nav-icon">○</span>Open<span
+              id="nav-open"
+              class="nav-count"
+              >0</span
+            ></button
+          ><button class="nav-item" data-view="IN_PROGRESS">
+            <span class="nav-icon">◒</span>In progress<span
+              id="nav-progress"
+              class="nav-count"
+              >0</span
+            ></button
+          ><button class="nav-item" data-view="RESOLVED">
+            <span class="nav-icon">✓</span>Resolved<span
+              id="nav-resolved"
+              class="nav-count"
+              >0</span
+            >
+          </button>
+        </nav>
+        <div class="sidebar-note">
+          <strong>Clarity, one issue at a time.</strong>
+          <p>Keep the context. Share the next step. Close the loop.</p>
+          <button id="help-open" class="text-button">
+            About this workspace
+          </button>
+        </div>
+        <div class="profile">
+          <span id="user-initials" class="avatar"></span>
+          <div>
+            <strong id="user-name"></strong><span id="user-role"></span>
+          </div>
+          <button id="logout" title="Sign out" aria-label="Sign out">⏻</button>
+        </div>
+      </aside>
+      <main id="main" class="main" tabindex="-1">
+        <header class="topbar">
+          <span id="view-context">Workspace / All issues</span
+          ><span id="demo-badge" class="demo-badge" hidden
+            >Shared demo · sample data only</span
+          >
+        </header>
+        <section class="page-heading">
+          <div>
+            <p class="eyebrow">A LITTLE STRUCTURE. A LOT MORE CLARITY.</p>
+            <h1>Keep work moving.</h1>
+            <p id="scope-description" class="muted"></p>
+          </div>
+          <button id="create-open" class="button primary">
+            <span aria-hidden="true">＋</span> New issue
+          </button>
+        </section>
+        <section class="stats" aria-label="Issue summary">
+          <button class="stat" data-view="">
+            <span>Total issues</span><strong id="stat-total">—</strong
+            ><small>In your view</small></button
+          ><button class="stat" data-view="OPEN">
+            <span>Open</span><strong id="stat-open">—</strong
+            ><small>Ready for a first look</small></button
+          ><button class="stat" data-view="IN_PROGRESS">
+            <span>In progress</span><strong id="stat-progress">—</strong
+            ><small>Moving toward a solution</small></button
+          ><button class="stat" data-view="RESOLVED">
+            <span>Resolved</span><strong id="stat-resolved">—</strong
+            ><small>The loop is closed</small>
+          </button>
+        </section>
+        <section class="issue-section" aria-labelledby="issues-title">
+          <div class="list-title">
+            <h2 id="issues-title">All issues</h2>
+            <span id="result-count" class="muted"></span>
+          </div>
+          <form id="filters" class="filters">
+            <div class="search">
+              <label class="sr-only" for="search">Search issues</label
+              ><span aria-hidden="true">⌕</span
+              ><input
+                id="search"
+                type="search"
+                maxlength="120"
+                placeholder="Search titles and descriptions…"
+              /><button class="search-button" type="submit">Search</button>
+            </div>
+            <div class="select-wrap">
+              <label class="sr-only" for="status-filter">Filter by status</label
+              ><select id="status-filter">
+                <option value="">All statuses</option>
+                <option value="OPEN">Open</option>
+                <option value="IN_PROGRESS">In progress</option>
+                <option value="RESOLVED">Resolved</option>
+              </select>
+            </div>
+            <div class="select-wrap">
+              <label class="sr-only" for="priority-filter"
+                >Filter by priority</label
+              ><select id="priority-filter">
+                <option value="">All priorities</option>
+                <option value="URGENT">Urgent</option>
+                <option value="HIGH">High</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="LOW">Low</option>
+              </select>
+            </div>
+            <button id="clear-filters" class="text-button" type="button">
+              Clear
+            </button>
+          </form>
+          <p
+            id="list-status"
+            class="list-status"
+            role="status"
+            aria-live="polite"
+          ></p>
+          <div id="list-error" class="error-panel" hidden>
+            <p role="alert"></p>
+            <button id="list-retry" class="button secondary">Try again</button>
+          </div>
+          <div id="table-wrap" class="table-wrap">
+            <table>
+              <caption class="sr-only">
+                Issues visible to your account
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Issue</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Priority</th>
+                  <th scope="col">Assigned to</th>
+                  <th scope="col">Updated</th>
+                </tr>
+              </thead>
+              <tbody id="issue-rows"></tbody>
+            </table>
+          </div>
+          <div id="empty-state" class="empty-state" hidden>
+            <span aria-hidden="true">▧</span>
+            <h3>No issues in this view</h3>
+            <p>Try a different filter, or create a new issue.</p>
+            <button id="empty-clear" class="button secondary">
+              Clear filters
+            </button>
+          </div>
+          <footer class="list-footer">
+            <span id="page-label">Page 1</span>
+            <div>
+              <button id="previous-page" class="button secondary" disabled>
+                Previous</button
+              ><button id="next-page" class="button secondary" disabled>
+                Next
+              </button>
+            </div>
+          </footer>
+        </section>
+        <footer class="page-footer">
+          <span>Every issue has a story. Keep yours clear.</span
+          ><span>Issue Desk · v0.1.0</span>
+        </footer>
+      </main>
+    </div>
+    <dialog id="create-dialog" aria-labelledby="create-title">
+      <div class="dialog-heading">
+        <div>
+          <span class="eyebrow">START WITH THE CONTEXT</span>
+          <h2 id="create-title">Create an issue</h2>
+        </div>
+        <button
+          class="close-button"
+          data-close="create-dialog"
+          aria-label="Close new issue"
+        >
+          ×
+        </button>
+      </div>
+      <form id="create-form" class="dialog-body">
+        <label for="new-title">Title</label
+        ><input
+          id="new-title"
+          name="title"
+          required
+          minlength="3"
+          maxlength="120"
+          placeholder="A short, specific description"
+        />
+        <div class="form-grid">
+          <div>
+            <label for="new-category">Category</label>
+            <div class="select-wrap">
+              <select id="new-category" name="category">
+                <option value="APPLICATION">Application</option>
+                <option value="ACCESS">Access</option>
+                <option value="NETWORK">Network</option>
+                <option value="DEVICE">Device</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label for="new-priority">Priority</label>
+            <div class="select-wrap">
+              <select id="new-priority" name="priority">
+                <option value="LOW">Low</option>
+                <option value="MEDIUM" selected>Medium</option>
+                <option value="HIGH">High</option>
+                <option value="URGENT">Urgent</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <label for="new-description">Description</label
+        ><textarea
+          id="new-description"
+          name="description"
+          rows="5"
+          required
+          minlength="10"
+          maxlength="5000"
+          placeholder="What happened? What did you expect? Include the steps that help someone understand the issue."
+        ></textarea>
+        <p class="field-note">
+          Use sample details only. Do not include passwords or personal
+          information.
+        </p>
+        <p id="create-error" class="error" role="alert" hidden></p>
+        <div class="dialog-actions">
+          <button
+            class="button secondary"
+            type="button"
+            data-close="create-dialog"
+          >
+            Cancel</button
+          ><button class="button primary" type="submit">Create issue</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog
+      id="issue-dialog"
+      class="detail-dialog"
+      aria-labelledby="detail-title"
+    >
+      <div class="dialog-heading">
+        <div>
+          <span id="detail-id" class="eyebrow">ISSUE</span>
+          <h2 id="detail-title">Loading issue…</h2>
+        </div>
+        <button
+          class="close-button"
+          data-close="issue-dialog"
+          aria-label="Close issue details"
+        >
+          ×
+        </button>
+      </div>
+      <div class="dialog-body">
+        <p id="detail-error" class="error" role="alert" hidden></p>
+        <button id="detail-reload" class="button secondary" hidden>
+          Reload issue
+        </button>
+        <div id="detail-content" hidden>
+          <div id="detail-badges" class="detail-badges"></div>
+          <p id="detail-description" class="description"></p>
+          <dl class="issue-meta">
+            <div>
+              <dt>Reported by</dt>
+              <dd id="detail-owner"></dd>
+            </div>
+            <div>
+              <dt>Created</dt>
+              <dd id="detail-created"></dd>
+            </div>
+            <div>
+              <dt>Assigned to</dt>
+              <dd id="detail-assignee"></dd>
+            </div>
+          </dl>
+          <form id="update-form" class="update-form" hidden>
+            <h3>Triage & assignment</h3>
+            <div class="form-grid three">
+              <div>
+                <label for="edit-status">Status</label>
+                <div class="select-wrap">
+                  <select id="edit-status">
+                    <option value="OPEN">Open</option>
+                    <option value="IN_PROGRESS">In progress</option>
+                    <option value="RESOLVED">Resolved</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label for="edit-priority">Priority</label>
+                <div class="select-wrap">
+                  <select id="edit-priority">
+                    <option value="LOW">Low</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="HIGH">High</option>
+                    <option value="URGENT">Urgent</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label for="edit-assignee">Assigned to</label>
+                <div class="select-wrap">
+                  <select id="edit-assignee">
+                    <option value="">Unassigned</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <button class="button primary" type="submit">Save changes</button>
+          </form>
+          <div class="detail-tabs" role="tablist" aria-label="Issue history">
+            <button
+              role="tab"
+              id="discussion-tab"
+              aria-controls="discussion-panel"
+              aria-selected="true"
+              data-tab="discussion"
+            >
+              Discussion</button
+            ><button
+              role="tab"
+              id="activity-tab"
+              aria-controls="activity-panel"
+              aria-selected="false"
+              tabindex="-1"
+              data-tab="activity"
+            >
+              Activity
+            </button>
+          </div>
+          <section
+            id="discussion-panel"
+            role="tabpanel"
+            aria-labelledby="discussion-tab"
+          >
+            <div id="comments"></div>
+            <form id="comment-form">
+              <label for="comment-body">Add a comment</label
+              ><textarea
+                id="comment-body"
+                rows="3"
+                required
+                maxlength="2000"
+                placeholder="Share an update or the next step…"
+              ></textarea>
+              <p id="comment-error" class="error" role="alert" hidden></p>
+              <button class="button secondary" type="submit">
+                Post comment
+              </button>
+            </form>
+          </section>
+          <section
+            id="activity-panel"
+            role="tabpanel"
+            aria-labelledby="activity-tab"
+            hidden
+          >
+            <ol id="activity"></ol>
+          </section>
+        </div>
+      </div>
+    </dialog>
+    <dialog id="help-dialog" aria-labelledby="help-title">
+      <div class="dialog-heading">
+        <h2 id="help-title">A focused, shared workspace</h2>
+        <button
+          class="close-button"
+          data-close="help-dialog"
+          aria-label="Close workspace information"
+        >
+          ×
+        </button>
+      </div>
+      <div class="dialog-body help-content">
+        <p>
+          <strong>Members</strong> create issues, read their own reports, and
+          add comments.
+        </p>
+        <p>
+          <strong>Administrators</strong> review all issues, assign work, set
+          priorities, and change status.
+        </p>
+        <p>
+          Each change has an actor and a timestamp. If another administrator
+          updates an issue first, you will be asked to reload before saving.
+        </p>
+        <p>
+          This demonstration uses fictional accounts. The sample usernames and
+          password are public; do not use this workspace for real reports. Data
+          is shared between visitors and is stored in a database.
+        </p>
+        <button class="button primary" data-close="help-dialog">Got it</button>
+      </div>
+    </dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>

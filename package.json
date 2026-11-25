@@ -1,0 +1,7 @@
+{
+  "name": "issue-desk-preview",
+  "private": true,
+  "scripts": {
+    "dev": "bash scripts/preview.sh"
+  }
+}

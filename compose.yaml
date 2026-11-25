@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:17.12
+    environment:
+      POSTGRES_DB: issue_desk
+      POSTGRES_USER: issue_desk
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?Copy .env.example to .env first}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U issue_desk -d issue_desk"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      DATABASE_URL: jdbc:postgresql://db:5432/issue_desk
+      DATABASE_USERNAME: issue_desk
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DEMO_ENABLED: "true"
+      COOKIE_SECURE: "false"
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+  postgres-data:
