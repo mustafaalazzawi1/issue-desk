@@ -72,7 +72,7 @@ Use a host that runs Java 21 or Docker and a **dedicated PostgreSQL database**. 
 | `COOKIE_SECURE`     | `true` behind public HTTPS                                         |
 | `DEMO_ENABLED`      | `true` for the synthetic public demonstration; defaults to `false` |
 
-Run `java -jar target/issue-tracker-0.1.0.jar` or build the Dockerfile. Health check: `GET /api/health`. Flyway applies the versioned schema at startup. Keep database credentials out of Git. For public hosting, use HTTPS, secure cookies, provider rate limiting, backups, and a separate database. The current hosting setup uses a free Render Docker web service and a dedicated Neon PostgreSQL 17 database. Public HTTPS acceptance is still pending. Free hosting can sleep when idle; there is no always-on availability claim.
+Run `java -jar target/issue-tracker-0.1.0.jar` or build the Dockerfile. Health check: `GET /api/health`. Flyway applies the versioned schema at startup. Keep database credentials out of Git. For public hosting, use HTTPS, secure cookies, provider rate limiting, backups, and a separate database. A dedicated Neon PostgreSQL 17 database has been provisioned. The web service has not been deployed; hosting selection and public HTTPS acceptance remain pending. Free hosting may sleep or stop at its usage limit; there is no always-on availability claim.
 
 Demo mode is not an account-management system. With demo mode off, this version has no registration or user-provisioning UI. Do not use the public sample accounts for private reports.
 

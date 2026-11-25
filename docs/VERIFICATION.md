@@ -18,4 +18,4 @@ The integration suite includes simultaneous competing updates, not just sequenti
 
 The narrow-width checks used desktop Chromium zoom. They are not a claim of testing physical mobile devices or mobile Safari. A complete accessibility audit, load test, and independent security audit have not been performed.
 
-Source commit `6770702` passed hosted GitHub Actions on November 25, 2026. A dedicated Neon PostgreSQL 17 project has been provisioned, and Render hosting is being configured. Public HTTPS verification remains pending; no live-demo URL is claimed yet. The existing portfolio has not been changed during this publication pass.
+Source commit `6770702` passed hosted GitHub Actions on November 25, 2026. A dedicated Neon PostgreSQL 17 project has been provisioned. The web service has not been deployed; hosting selection and public HTTPS verification remain pending. No live-demo URL is claimed yet. The existing portfolio has not been changed during this publication pass.
