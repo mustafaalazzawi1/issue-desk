@@ -63,7 +63,7 @@ Open http://localhost:8080. The app port is bound to localhost; PostgreSQL is on
 
 The integration suite sends real HTTP requests through Spring Security to a fresh **real PostgreSQL** database. It covers owner isolation, role checks, CSRF, session rotation and logout, input limits, search, pagination, assignment validation, durable comments, audit events, and two administrators saving concurrently. It uses an embedded PostgreSQL process, not an in-memory SQL substitute. Tests do not touch the local demo database.
 
-The production artifact is `target/issue-tracker-0.1.0.jar`. [The deployed source passed GitHub Actions](https://github.com/mustafaalazzawi1/issue-desk/actions/runs/45586489178), including all 19 integration tests, the packaged-JAR smoke test, and browser-script syntax.
+The production artifact is `target/issue-tracker-0.1.0.jar`. [The deployed source passed GitHub Actions](https://github.com/mustafaalazzawi1/issue-desk/actions/runs/45592145187), including all 19 integration tests, the packaged-JAR smoke test, and browser-script syntax.
 
 ## Deploy the Java app
 

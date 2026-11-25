@@ -2,7 +2,7 @@
 
 [Open Issue Desk](https://issue-desk-production.up.railway.app/)
 
-Verified November 25, 2026. The public application runs the repository Dockerfile on Railway Free and uses a dedicated Neon Free PostgreSQL 17 database. The Railway deployment is pinned to source commit `5499e4e02c4b35f1de9bc7ef2af3b60dc7e4c2bc`; subsequent documentation edits do not rebuild the application automatically.
+Verified November 25, 2026. The public application runs the repository Dockerfile on Railway Free and uses a dedicated Neon Free PostgreSQL 17 database. The Railway deployment is pinned to reviewed source commit `fdf6ab4663229e88604c63626247e5e7c401c86b`; subsequent documentation edits do not rebuild the application automatically.
 
 ## Service configuration
 
@@ -45,4 +45,4 @@ The seeded accounts are intentionally public. Visitors share data; use fictional
 
 ## Verification
 
-The deployed Docker image started successfully with Java 21 and PostgreSQL 17.12. Flyway applied schema version 1. Browser acceptance covered member issue creation and comments, administrator assignment and resolution, activity history, and persistence after a page reload. See the [verification record](VERIFICATION.md) for scope and limits.
+The deployed Docker image started successfully with Java 21 and PostgreSQL 17.12. Flyway applied schema version 1 on the initial deployment. The reviewed deployment validated the existing schema without adding a migration. Initial browser acceptance covered member issue creation and comments, administrator assignment and resolution, activity history, and persistence after a page reload. The second review confirmed the same report, comment, assignment, and activity survived the deployment, and verified the corrected JSON request limit over public HTTPS. See the [verification record](VERIFICATION.md) for scope and limits.
