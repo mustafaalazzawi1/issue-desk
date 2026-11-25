@@ -46,6 +46,6 @@ Comment body:
 
 Status: `OPEN`, `IN_PROGRESS`, `RESOLVED`. Priority: `LOW`, `MEDIUM`, `HIGH`, `URGENT`. Category: `ACCESS`, `NETWORK`, `APPLICATION`, `DEVICE`.
 
-Page size is 20. Search is limited to 120 characters. Title: 3–120 characters; description: 10–5,000; comment: nonblank and at most 2,000. JSON requests are limited to 16 KiB, including chunked bodies. The shared demonstration is limited to 500 issues and 100 comments per issue. These capacity limits are not a substitute for request-rate limiting.
+Page size is 20. Search is limited to 120 characters. Title: 3–120 characters; description: 10–5,000; comment: nonblank and at most 2,000. JSON requests are limited to 16 KiB, including chunked bodies and structured media types such as `application/problem+json` and `application/vnd.issue+json`. Oversized requests return HTTP 413 before JSON parsing. The shared demonstration is limited to 500 issues and 100 comments per issue. These capacity limits are not a substitute for request-rate limiting.
 
 Errors: 400 invalid input, 401 unauthenticated, 403 forbidden action or invalid CSRF, 404 missing or invisible issue, 409 stale edit, 413 oversized request, 429 demo capacity reached. Responses include `message` and optionally field errors. No password hashes are returned.

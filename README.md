@@ -12,6 +12,8 @@ The live demo uses shared sample accounts and persistent data. Use fictional inf
 
 This is an independent portfolio project by **Mustafa Al Azzawi**, developed with Codex assistance. It is not coursework. The first version demonstrates backend authorization, relational data, transactions, concurrent edits, and a complete browser workflow. The source and automated verification are published on GitHub. The live demo runs the Java application on Railway with a dedicated Neon PostgreSQL database.
 
+![Issue Desk administrator dashboard with reports, statuses, priorities, and assignments](docs/screenshots/dashboard.jpg)
+
 ## What you can do
 
 - **Member:** create issues, search and filter your own reports, and post comments.

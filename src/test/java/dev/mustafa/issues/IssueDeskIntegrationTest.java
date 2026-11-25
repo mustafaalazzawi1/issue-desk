@@ -449,16 +449,23 @@ class IssueDeskIntegrationTest {
   void bodySizeLimitHandlesKnownAndChunkedLengths() throws Exception {
     var c = new Client().login("alex");
     String body = "{\"body\":\"" + "x".repeat(17000) + "\"}";
-    assertEquals(413, c.send("POST", "/api/issues", body, "application/json", true).status);
-    var req =
-        HttpRequest.newBuilder(URI.create("http://localhost:" + port + "/api/issues"))
-            .header("Content-Type", "application/json")
-            .header(c.header, c.csrf)
-            .POST(
-                HttpRequest.BodyPublishers.ofInputStream(
-                    () -> new java.io.ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8))))
-            .build();
-    assertEquals(413, c.http.send(req, HttpResponse.BodyHandlers.ofString()).statusCode());
+    for (String contentType :
+        List.of(
+            "application/json",
+            "application/problem+json",
+            "application/vnd.issue+json; charset=UTF-8")) {
+      assertEquals(413, c.send("POST", "/api/issues", body, contentType, true).status, contentType);
+      var req =
+          HttpRequest.newBuilder(URI.create("http://localhost:" + port + "/api/issues"))
+              .header("Content-Type", contentType)
+              .header(c.header, c.csrf)
+              .POST(
+                  HttpRequest.BodyPublishers.ofInputStream(
+                      () -> new java.io.ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8))))
+              .build();
+      assertEquals(
+          413, c.http.send(req, HttpResponse.BodyHandlers.ofString()).statusCode(), contentType);
+    }
   }
 
   @Test

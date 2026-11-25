@@ -18,12 +18,15 @@ class JsonBodyLimit extends OncePerRequestFilter {
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain chain)
       throws ServletException, IOException {
-    if (!request.getRequestURI().startsWith("/api/")
-        || request.getContentType() == null
-        || !request
-            .getContentType()
-            .toLowerCase(java.util.Locale.ROOT)
-            .startsWith("application/json")) {
+    String contentType = request.getContentType();
+    String mediaType =
+        contentType == null
+            ? ""
+            : contentType.split(";", 2)[0].strip().toLowerCase(java.util.Locale.ROOT);
+    boolean json =
+        mediaType.equals("application/json")
+            || (mediaType.startsWith("application/") && mediaType.endsWith("+json"));
+    if (!request.getRequestURI().startsWith("/api/") || !json) {
       chain.doFilter(request, response);
       return;
     }
